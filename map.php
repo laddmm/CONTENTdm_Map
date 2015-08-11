@@ -3,7 +3,7 @@
 /* 
 Map made with the CONTENTdm API and the Javascript Leaflet library
 
-Designed by Marcus Ladd (laddmm@MiamiOH.edu), Miami University Libraries. Last updated August 5, 2015.
+Designed by Marcus Ladd (laddmm@MiamiOH.edu), Miami University Libraries. Last updated August 11, 2015.
 
 Please note this requires Leaflet and the markercluster customization for Leaflet which are avaiable from the Leaflet GitHub at https://github.com/Leaflet
 
