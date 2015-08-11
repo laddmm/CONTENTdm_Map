@@ -67,7 +67,7 @@ $startingzoom = "8"; /* This is the starting zoom. 8 creates a map about 400 mil
 	<div id="map"></div>
 	<script>
 
-		var map = L.map('map').setView([40.60144, -82.68311], 8);
+		var map = L.map('map').setView([<? echo $startingcoords; ?>], <? echo $startingzoom; ?>);
 
 		var markers = L.markerClusterGroup();
 
