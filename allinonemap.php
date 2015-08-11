@@ -78,6 +78,8 @@ $startingzoom = "8"; /* This is the starting zoom. 8 creates a map about 400 mil
 		}).addTo(map);
 <? 
 
+/* This function will check to make sure the location field has no alphabet characters - only coordinates will work in this version.*/
+
 function ctest($ccheck) { if (preg_match('/[A-Za-z]/', $ccheck)) return true; } 
 
 $i = 1;
