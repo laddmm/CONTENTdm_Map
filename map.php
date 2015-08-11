@@ -22,6 +22,12 @@ $sqlpassword = "sqlpassword"; /* Replace sqlpassword with the password for your 
 
 $pagetitle = "pagetitle"; /* Replace pagetitle with the title of your map */
 
+$startingcoords = "39.833333, -98.583333"; /* This is the location where you want to center the map when it loads. If you are unsure of what to chose, 39.833333, -98.583333 is the geographic center of the contiguous United States. */
+
+$startingzoom = "8"; /* This is the starting zoom. 8 creates a map about 400 miles wide. The range is 0-20 with 0 showing the entire world and 20 the maximum zoom. */
+
+/* END OF CUSTOMIZATION, NO FURTHER EDITS ARE REQUIRED */
+
 //SQL set up
 
 $dsn = 'mysql:host=' . $sqlhost . ';dbname=' . $dbnameconfig . ';charset=utf8';
@@ -70,7 +76,7 @@ $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	<div id="map"></div>
 	<script>
 
-		var map = L.map('map').setView([40.60144, -82.68311], 8);
+		var map = L.map('map').setView([<? echo $startingcoords; ?>], <? echo $startingzoom; ?>);
 
 		var markers = L.markerClusterGroup();
 
