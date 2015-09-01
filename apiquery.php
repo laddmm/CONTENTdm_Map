@@ -102,7 +102,7 @@ foreach ($response as $ctest) {
 
 	if ($ctest==$cfail) {
 
-		$cstm = "DELETE FROM " . $dbtabl . " WHERE coords=', '";
+		$cstm = "DELETE FROM " . $dbtable . " WHERE coords=', '";
 	
 		$sqlstm = $pdo->prepare($cstm);
 		$sqlstm->execute();
