@@ -87,31 +87,6 @@ while ($i < 10000) {
 		
 /* Done with creating $id array */
 
-/* The Google Maps API is buggy and doesn't always get everything. This checks for anything it missed the previous time. If the coords field in the SQL database is empty, it will delete the entry. */
-
-$mapsstm = "Select coords FROM " . $dbtable;
-
-$sqlstm = $pdo->prepare($mapsstm);
-$sqlstm->execute();
-
-$response = $sqlstm->fetchAll(PDO::FETCH_COLUMN, 0);
-
-$cfail = ", ";
-
-foreach ($response as $ctest) {
-
-	if ($ctest==$cfail) {
-
-		$cstm = "DELETE FROM " . $dbtable . " WHERE coords=', '";
-	
-		$sqlstm = $pdo->prepare($cstm);
-		$sqlstm->execute();
-
-		}
-	}
-
-/* Done with deleting blank coordinates */
-		
 /* This uses the $id array to compare the SQL table to the CONTENTdm collection. If an id is found in the CONTENTdm collection that is not in the SQL table, it is added to $newid. */
 
 $idstm = "SELECT id FROM " . $dbtable;
@@ -125,7 +100,7 @@ foreach ($id as $x) {
 
 if (!in_array($x, $return)) {
 	$newid[] = $x;
-	echo $x . " was marked for upload. ";
+	echo $x . " was marked for upload.\n";
 	}
 
 }
@@ -153,9 +128,9 @@ foreach ($newid as $item) {
 
 		$location = $array[$locfield];
 
-/* The collection this map is based on has two location fields - one that is a subject heading of the state and city (e.g. Ohio--Oxford), the other is a more accurate street address or coordinates. Delete this section if double location fields are not needed. */			
+/* The collection this map is based on has two location fields - one that is a subject heading of the state and city (e.g. Ohio--Oxford), the other is a more accurate street address or coordinates. Delete this section if double location fields are not needed. */		
 		
-		$loc2 = $array["coveraa"];
+		$loc2 = $array[$genlocfield];
 
 		if (empty($location)) {
 			$location = $loc2;
@@ -176,7 +151,7 @@ foreach ($newid as $item) {
 		$sql = "INSERT INTO " . $dbtable . " (title,id,url,thumb,coords) VALUES (:title, :id, :url, :thumb, :coords)";
 		$q = $pdo->prepare($sql);
 		$q->execute($upload);
-		echo $item . " was successfully added. ";
+		echo $item . " was successfully added!\n";
 
 		} // Closes out if(!empty($location)
 		} // Closes out foreach
@@ -184,6 +159,43 @@ foreach ($newid as $item) {
 // Closes out if(!empty
 }
 
-else { echo "Nothing new to add.";}
+else { echo "Nothing new to add.\n";}
+
+/* The Google Maps API is buggy and doesn't always get everything. This checks for anything it missed the previous time. If the coords field in the SQL database is empty, it will delete the entry. */
+
+echo "Checking for errors...\n";
+
+$iderrors = "SELECT id FROM " . $dbtable . " WHERE coords=', '";
+
+$idsql = $pdo->prepare($iderrors);
+$idsql->execute();
+
+$idresult = $idsql->fetchAll(PDO::FETCH_COLUMN);
+
+function print_coords_errors ($val){
+	echo "Error(s) found in:\n";
+	foreach ($val as $x){
+	echo $x . "\n";}
+	echo "Marked for deletion.\n";
+	}
+
+if (!empty($idresult)) {	
+print_coords_errors ($idresult);
+
+$fixcoords = "DELETE FROM " . $dbtable . " WHERE coords=', '";
+
+$sqlstm = $pdo->prepare($fixcoords);
+$sqlstm->execute();
+
+echo "Errors deleted!\n";
+}
+
+else {echo "No errors found!\n";}
+
+/* Done with deleting blank coordinates */
+
+$pdo = null;
+
+echo "All done!\n";
 
 ?>
